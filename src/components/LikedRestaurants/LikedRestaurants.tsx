@@ -6,6 +6,11 @@ interface LikedRestaurantsProps {
 }
 
 const LikedRestaurants = ({ likedRestaurants }: LikedRestaurantsProps) => {
+	// Shuffle the likedRestaurants array
+	const shuffledRestaurants = [...likedRestaurants].sort(
+		() => Math.random() - 0.5
+	);
+
 	return (
 		<div className="rounded-lg max-w-md">
 			<h2 className="text-2xl font-bold mb-4 text-gray-600">
@@ -15,7 +20,7 @@ const LikedRestaurants = ({ likedRestaurants }: LikedRestaurantsProps) => {
 				<p className="text-gray-600">No liked restaurants yet.</p>
 			) : (
 				<ul className="space-y-4">
-					{[...likedRestaurants].reverse().map((restaurant) => (
+					{shuffledRestaurants.map((restaurant) => (
 						<li key={restaurant.place_id}>
 							<RestaurantCard
 								restaurant={restaurant}

@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 		);
 	}
 
-	const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+	const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 	const apiUrl = `https://places.googleapis.com/v1/places:searchNearby`;
 
 	try {

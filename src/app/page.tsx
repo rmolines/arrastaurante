@@ -22,7 +22,7 @@ export default function Home() {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [priceFilter, setPriceFilter] = useState<number | null>(null); // Any price
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [distanceFilter, setDistanceFilter] = useState<number>(5); // 5 km
+	const [distanceFilter, setDistanceFilter] = useState<number>(1); // 5 km
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [ratingFilter, setRatingFilter] = useState<number>(4); // 4 stars and above
 
