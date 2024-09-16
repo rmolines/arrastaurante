@@ -1,5 +1,4 @@
 // app/api/restaurants/route.ts
-//@ts-nocheck
 
 import { NextResponse } from "next/server";
 import { GooglePlace, Restaurant } from "@/types/restaurants";
