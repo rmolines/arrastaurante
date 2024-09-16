@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -18,8 +19,11 @@ export default function Home() {
 	const [likedRestaurants, setLikedRestaurants] = useState<Restaurant[]>([]);
 	const [postalCode, setPostalCode] = useState("");
 	const [error, setError] = useState<string | null>(null);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [priceFilter, setPriceFilter] = useState<number | null>(null); // Any price
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [distanceFilter, setDistanceFilter] = useState<number>(5); // 5 km
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [ratingFilter, setRatingFilter] = useState<number>(4); // 4 stars and above
 
 	const handlePostalCodeSearch = async () => {
