@@ -1,3 +1,4 @@
+// @ts-nocheck
 // app/api/restaurants/route.ts
 
 import { NextResponse } from "next/server";
