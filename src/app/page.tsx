@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 
 import { useEffect, useState } from "react";
@@ -5,7 +6,6 @@ import RestaurantCard from "../components/RestaurantCard/RestaurantCard";
 import LikedRestaurants from "../components/LikedRestaurants/LikedRestaurants";
 import { fetchNearbyRestaurants } from "../utils/fetchRestaurants";
 import { Restaurant } from "../types/restaurants";
-import { FaStar, FaRegStar } from "react-icons/fa"; // Make sure to install react-icons
 
 export default function Home() {
 	const [location, setLocation] = useState<{

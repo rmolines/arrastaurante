@@ -53,3 +53,18 @@ export interface RestaurantCardProps {
 	restaurant: Restaurant;
 	handleSwipe: (direction: string, restaurant: Restaurant) => void;
 }
+
+export interface GooglePlace {
+	id: string;
+	displayName?: { text: string };
+	formattedAddress?: string;
+	rating?: number;
+	priceLevel?: number;
+	types?: string[];
+	primaryTypeDisplayName?: { text: string };
+	currentOpeningHours?: OpeningHours;
+	photos?: Photo[];
+	websiteUri?: string;
+	reviews?: Review[];
+	location?: { latitude: number; longitude: number };
+}
