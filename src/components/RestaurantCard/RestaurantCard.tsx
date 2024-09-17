@@ -30,7 +30,7 @@ export function RestaurantCard({
 				</div>
 				<div className="w-2/3 p-3 flex flex-col justify-between">
 					<div>
-						<h3 className="text-lg font-semibold mb-1 text-gray-800">
+						<h3 className="text-lg font-semibold mb-1 text-gray-800 truncate">
 							{restaurant.name}
 						</h3>
 						<div className="flex items-center justify-between mb-1">
@@ -70,7 +70,7 @@ export function RestaurantCard({
 			<div className="card bg-white w-80 max-w-full shadow-lg rounded-xl overflow-hidden">
 				<ImageCarousel photos={restaurant.photos || []} />
 				<div className="p-4">
-					<h3 className="text-2xl font-bold mb-2 text-gray-800">
+					<h3 className="text-2xl font-bold mb-2 text-gray-800 truncate">
 						{restaurant.name}
 					</h3>
 					<StarRating rating={restaurant.rating ?? undefined} />

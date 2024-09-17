@@ -26,7 +26,9 @@ const RestaurantDetails: React.FC<{
 			}`}
 		>
 			{!compact && (
-				<p className="text-gray-600 mb-2">{restaurant.address}</p>
+				<p className="text-gray-600 mb-2 h-12 overflow-hidden text-ellipsis">
+					{restaurant.address}
+				</p>
 			)}
 			<div className="flex items-center mb-2">
 				<FaUtensils className="text-orange-500 mr-1" />

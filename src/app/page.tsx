@@ -5,10 +5,17 @@
 
 import { useEffect, useState } from "react";
 import RestaurantCard from "../components/RestaurantCard/RestaurantCard";
-import LikedRestaurants from "../components/LikedRestaurants/LikedRestaurants";
+import dynamic from "next/dynamic";
 import { fetchNearbyRestaurants } from "../utils/fetchRestaurants";
 import { Restaurant } from "../types/restaurants";
 import useLocalStorage from "../hooks/useLocalStorage";
+
+const LikedRestaurants = dynamic(
+	() => import("../components/LikedRestaurants/LikedRestaurants"),
+	{
+		ssr: false,
+	}
+);
 
 export default function Home() {
 	const [location, setLocation] = useState<{
@@ -108,8 +115,8 @@ export default function Home() {
 
 	return (
 		<main className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-100 to-white">
-			<div className="hidden md:block md:w-1/3"></div>
-			<div className="w-full lg:w-1/3 flex flex-col items-center p-4">
+			<div className="w-full md:w-1/3 lg:w-1/4"></div>
+			<div className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center">
 				<div className="mb-4 flex items-center">
 					<input
 						type="text"
@@ -141,15 +148,14 @@ export default function Home() {
 						</p>
 					)}
 				</div>
-			</div>
-			<div className="w-full lg:w-1/3 p-4">
-				<div className="rounded-lg max-h-[50vh] md:max-h-[calc(100vh-2rem)] overflow-y-auto">
+				<div className="w-full max-w-md mt-8">
 					<LikedRestaurants
 						likedRestaurants={likedRestaurants}
 						clearLikedRestaurants={clearLikedRestaurants}
 					/>
 				</div>
 			</div>
+			<div className="w-full md:w-1/3 lg:w-1/4"></div>
 		</main>
 	);
 }

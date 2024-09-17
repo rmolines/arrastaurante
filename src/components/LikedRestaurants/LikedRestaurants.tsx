@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Restaurant } from "@/types/restaurants";
 import RestaurantCard from "../RestaurantCard/RestaurantCard";
 
@@ -10,6 +11,16 @@ const LikedRestaurants = ({
 	likedRestaurants,
 	clearLikedRestaurants,
 }: LikedRestaurantsProps) => {
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted) {
+		return null; // or a loading placeholder
+	}
+
 	const restaurantsArray = Array.isArray(likedRestaurants)
 		? likedRestaurants
 		: [];
