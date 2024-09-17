@@ -24,10 +24,12 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 			{photos.length > 0 ? (
 				<>
 					<Image
-						src={`https://places.googleapis.com/v1/${photos[currentIndex].name}/media?key=${process.env.GOOGLE_MAPS_API_KEY}&maxHeightPx=400`}
+						src={`/api/getPlacePhoto?photoName=${encodeURIComponent(
+							photos[currentIndex].name
+						)}`}
 						alt={`Restaurant image ${currentIndex + 1}`}
-						layout="fill"
-						objectFit="cover"
+						fill
+						style={{ objectFit: "cover" }}
 					/>
 					{photos.length > 1 && (
 						<>
