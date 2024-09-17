@@ -9,6 +9,7 @@ interface ImageCarouselProps {
 const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
+	const [imageError, setImageError] = useState(false);
 
 	const nextImage = () => {
 		setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
@@ -20,24 +21,37 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 		);
 	};
 
+	const imageUrl = `/api/getPlacePhoto?photoName=${encodeURIComponent(
+		photos[currentIndex]?.name || ""
+	)}`;
+
 	return (
 		<div className="relative h-48">
 			{photos.length > 0 ? (
 				<>
-					{isLoading && (
+					{isLoading && !imageError && (
 						<div className="absolute inset-0 flex items-center justify-center bg-gray-200">
 							<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
 						</div>
 					)}
 					<Image
-						src={`/api/getPlacePhoto?photoName=${encodeURIComponent(
-							photos[currentIndex].name
-						)}`}
+						src={imageUrl}
 						alt={`Restaurant image ${currentIndex + 1}`}
 						fill
 						style={{ objectFit: "cover" }}
 						onLoadingComplete={() => setIsLoading(false)}
+						onError={() => {
+							setIsLoading(false);
+							setImageError(true);
+						}}
 					/>
+					{imageError && (
+						<div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+							<p className="text-gray-500">
+								Failed to load image
+							</p>
+						</div>
+					)}
 					{photos.length > 1 && (
 						<>
 							<button
