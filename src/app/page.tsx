@@ -100,9 +100,9 @@ export default function Home() {
 	const currentRestaurant = restaurants[currentRestaurantIndex];
 
 	return (
-		<main className="flex min-h-screen bg-gradient-to-b from-blue-100 to-white">
-			<div className="w-1/3"></div>
-			<div className="w-1/3 flex flex-col items-center p-4">
+		<main className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-100 to-white">
+			<div className="hidden md:block md:w-1/3"></div>
+			<div className="w-full lg:w-1/3 flex flex-col items-center p-4">
 				<div className="mb-4 flex items-center">
 					<input
 						type="text"
@@ -135,8 +135,8 @@ export default function Home() {
 					)}
 				</div>
 			</div>
-			<div className="w-1/3 p-4">
-				<div className="rounded-lg max-h-[calc(100vh-2rem)] overflow-y-auto">
+			<div className="w-full lg:w-1/3 p-4">
+				<div className="rounded-lg max-h-[50vh] md:max-h-[calc(100vh-2rem)] overflow-y-auto">
 					<LikedRestaurants likedRestaurants={likedRestaurants} />
 				</div>
 			</div>

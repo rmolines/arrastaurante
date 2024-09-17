@@ -8,6 +8,7 @@ interface ImageCarouselProps {
 
 const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const nextImage = () => {
 		setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
@@ -23,6 +24,11 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 		<div className="relative h-48">
 			{photos.length > 0 ? (
 				<>
+					{isLoading && (
+						<div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+							<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+						</div>
+					)}
 					<Image
 						src={`/api/getPlacePhoto?photoName=${encodeURIComponent(
 							photos[currentIndex].name
@@ -30,6 +36,7 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 						alt={`Restaurant image ${currentIndex + 1}`}
 						fill
 						style={{ objectFit: "cover" }}
+						onLoadingComplete={() => setIsLoading(false)}
 					/>
 					{photos.length > 1 && (
 						<>

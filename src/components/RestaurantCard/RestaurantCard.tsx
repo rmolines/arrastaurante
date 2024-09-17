@@ -1,4 +1,4 @@
-import TinderCard from "react-tinder-card";
+import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { Restaurant } from "@/types/restaurants";
 import StarRating from "./StarRating";
 import PriceLevel from "./PriceLevel";
@@ -18,6 +18,10 @@ export function RestaurantCard({
 	handleSwipe,
 	compact = false,
 }: RestaurantCardProps) {
+	const x = useMotionValue(0);
+	const rotate = useTransform(x, [-200, 200], [-30, 30]);
+	const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
+
 	if (compact) {
 		return (
 			<div className="card bg-white shadow-lg rounded-xl overflow-hidden flex flex-row w-full h-32">
@@ -44,11 +48,24 @@ export function RestaurantCard({
 		);
 	}
 
+	const handleDragEnd = (
+		event: MouseEvent | TouchEvent | PointerEvent,
+		info: PanInfo
+	) => {
+		if (info.offset.x > 100) {
+			handleSwipe?.("right", restaurant);
+		} else if (info.offset.x < -100) {
+			handleSwipe?.("left", restaurant);
+		}
+	};
+
 	return (
-		<TinderCard
+		<motion.div
 			className="swipe"
-			key={restaurant.place_id}
-			onSwipe={(dir) => handleSwipe?.(dir, restaurant)}
+			drag="x"
+			dragConstraints={{ left: 0, right: 0 }}
+			style={{ x, rotate, opacity }}
+			onDragEnd={handleDragEnd}
 		>
 			<div className="card bg-white w-80 max-w-full shadow-lg rounded-xl overflow-hidden">
 				<ImageCarousel photos={restaurant.photos || []} />
@@ -61,11 +78,13 @@ export function RestaurantCard({
 				</div>
 				<RestaurantDetails restaurant={restaurant} compact={false} />
 				<ActionButtons
-					handleSwipe={handleSwipe}
+					handleSwipe={(direction) =>
+						handleSwipe?.(direction, restaurant)
+					}
 					restaurant={restaurant}
 				/>
 			</div>
-		</TinderCard>
+		</motion.div>
 	);
 }
 
