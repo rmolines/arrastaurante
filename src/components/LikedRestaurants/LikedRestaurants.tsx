@@ -3,22 +3,35 @@ import RestaurantCard from "../RestaurantCard/RestaurantCard";
 
 interface LikedRestaurantsProps {
 	likedRestaurants: Restaurant[];
+	clearLikedRestaurants: () => void;
 }
 
-const LikedRestaurants = ({ likedRestaurants }: LikedRestaurantsProps) => {
-	// Shuffle the likedRestaurants array
-	const reversedRestaurants = [...likedRestaurants].reverse();
+const LikedRestaurants = ({
+	likedRestaurants,
+	clearLikedRestaurants,
+}: LikedRestaurantsProps) => {
+	const restaurantsArray = Array.isArray(likedRestaurants)
+		? likedRestaurants
+		: [];
 
 	return (
 		<div className="rounded-lg max-w-md">
-			<h2 className="text-2xl font-bold mb-4 text-gray-600">
-				Liked Restaurants
-			</h2>
-			{likedRestaurants.length === 0 ? (
+			<div className="flex justify-between items-center mb-4">
+				<h2 className="text-2xl font-bold text-gray-600">
+					Liked Restaurants
+				</h2>
+				<button
+					onClick={clearLikedRestaurants}
+					className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+				>
+					Reset List
+				</button>
+			</div>
+			{restaurantsArray.length === 0 ? (
 				<p className="text-gray-600">No liked restaurants yet.</p>
 			) : (
 				<ul className="space-y-4">
-					{reversedRestaurants.map((restaurant) => (
+					{restaurantsArray.map((restaurant) => (
 						<li key={restaurant.place_id}>
 							<RestaurantCard
 								restaurant={restaurant}

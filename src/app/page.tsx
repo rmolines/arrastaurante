@@ -8,6 +8,7 @@ import RestaurantCard from "../components/RestaurantCard/RestaurantCard";
 import LikedRestaurants from "../components/LikedRestaurants/LikedRestaurants";
 import { fetchNearbyRestaurants } from "../utils/fetchRestaurants";
 import { Restaurant } from "../types/restaurants";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export default function Home() {
 	const [location, setLocation] = useState<{
@@ -16,7 +17,9 @@ export default function Home() {
 	}>({ lat: 40.7128, lng: -74.006 }); // Default to New York City
 	const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 	const [currentRestaurantIndex, setCurrentRestaurantIndex] = useState(0);
-	const [likedRestaurants, setLikedRestaurants] = useState<Restaurant[]>([]);
+	const [likedRestaurants, setLikedRestaurants] = useLocalStorage<
+		Restaurant[]
+	>("likedRestaurants", []);
 	const [postalCode, setPostalCode] = useState("");
 	const [error, setError] = useState<string | null>(null);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -92,12 +95,16 @@ export default function Home() {
 
 	const handleSwipe = (direction: string, restaurant: Restaurant) => {
 		if (direction === "right") {
-			setLikedRestaurants([...likedRestaurants, restaurant]);
+			setLikedRestaurants((prev) => [...prev, restaurant]);
 		}
 		setCurrentRestaurantIndex((prevIndex) => prevIndex + 1);
 	};
 
 	const currentRestaurant = restaurants[currentRestaurantIndex];
+
+	const clearLikedRestaurants = () => {
+		setLikedRestaurants([]);
+	};
 
 	return (
 		<main className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-100 to-white">
@@ -137,7 +144,10 @@ export default function Home() {
 			</div>
 			<div className="w-full lg:w-1/3 p-4">
 				<div className="rounded-lg max-h-[50vh] md:max-h-[calc(100vh-2rem)] overflow-y-auto">
-					<LikedRestaurants likedRestaurants={likedRestaurants} />
+					<LikedRestaurants
+						likedRestaurants={likedRestaurants}
+						clearLikedRestaurants={clearLikedRestaurants}
+					/>
 				</div>
 			</div>
 		</main>
