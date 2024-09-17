@@ -3,6 +3,7 @@
 
 "use client";
 
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import RestaurantCard from "../components/RestaurantCard/RestaurantCard";
 import dynamic from "next/dynamic";
@@ -114,48 +115,59 @@ export default function Home() {
 	};
 
 	return (
-		<main className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-100 to-white">
-			<div className="w-full md:w-1/3 lg:w-1/4"></div>
-			<div className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center">
-				<div className="mb-4 flex items-center">
-					<input
-						type="text"
-						value={postalCode}
-						onChange={(e) => setPostalCode(e.target.value)}
-						placeholder="Enter postal code"
-						className="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-					/>
-					<button
-						onClick={handlePostalCodeSearch}
-						className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 transition-colors"
-					>
-						Search
-					</button>
-				</div>
-				{error && <p className="text-red-500 mb-4">{error}</p>}
-				<div className="swipe-container flex flex-col items-center justify-center w-full max-w-md mx-auto">
-					{currentRestaurant ? (
-						<RestaurantCard
-							key={currentRestaurant.place_id}
-							restaurant={currentRestaurant}
-							handleSwipe={handleSwipe}
+		<>
+			<Head>
+				<link
+					href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+					rel="stylesheet"
+				/>
+			</Head>
+			<main className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-100 to-white">
+				<div className="w-full md:w-1/3 lg:w-1/4"></div>
+				<div className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center">
+					<h1 className="text-4xl md:text-5xl font-bold mb-8 mt-4 text-blue-600 font-pacifico">
+						Arrastaurante
+					</h1>
+					<div className="mb-4 flex items-center">
+						<input
+							type="text"
+							value={postalCode}
+							onChange={(e) => setPostalCode(e.target.value)}
+							placeholder="Enter postal code"
+							className="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
 						/>
-					) : (
-						<p className="text-lg text-gray-600 italic">
-							{restaurants.length > 0
-								? "No more restaurants to show"
-								: "Loading restaurants..."}
-						</p>
-					)}
+						<button
+							onClick={handlePostalCodeSearch}
+							className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 transition-colors"
+						>
+							Search
+						</button>
+					</div>
+					{error && <p className="text-red-500 mb-4">{error}</p>}
+					<div className="swipe-container flex flex-col items-center justify-center w-full max-w-md mx-auto">
+						{currentRestaurant ? (
+							<RestaurantCard
+								key={currentRestaurant.place_id}
+								restaurant={currentRestaurant}
+								handleSwipe={handleSwipe}
+							/>
+						) : (
+							<p className="text-lg text-gray-600 italic">
+								{restaurants.length > 0
+									? "No more restaurants to show"
+									: "Loading restaurants..."}
+							</p>
+						)}
+					</div>
+					<div className="w-full max-w-md mt-8">
+						<LikedRestaurants
+							likedRestaurants={likedRestaurants}
+							clearLikedRestaurants={clearLikedRestaurants}
+						/>
+					</div>
 				</div>
-				<div className="w-full max-w-md mt-8">
-					<LikedRestaurants
-						likedRestaurants={likedRestaurants}
-						clearLikedRestaurants={clearLikedRestaurants}
-					/>
-				</div>
-			</div>
-			<div className="w-full md:w-1/3 lg:w-1/4"></div>
-		</main>
+				<div className="w-full md:w-1/3 lg:w-1/4"></div>
+			</main>
+		</>
 	);
 }
