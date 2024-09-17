@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { fetchNearbyRestaurants } from "../utils/fetchRestaurants";
 import { Restaurant } from "../types/restaurants";
 import useLocalStorage from "../hooks/useLocalStorage";
+import * as XLSX from "xlsx";
 
 const LikedRestaurants = dynamic(
 	() => import("../components/LikedRestaurants/LikedRestaurants"),
@@ -114,6 +115,13 @@ export default function Home() {
 		setLikedRestaurants([]);
 	};
 
+	const exportToExcel = () => {
+		const worksheet = XLSX.utils.json_to_sheet(likedRestaurants);
+		const workbook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Liked Restaurants");
+		XLSX.writeFile(workbook, "liked_restaurants.xlsx");
+	};
+
 	return (
 		<>
 			<Head>
@@ -164,6 +172,12 @@ export default function Home() {
 							likedRestaurants={likedRestaurants}
 							clearLikedRestaurants={clearLikedRestaurants}
 						/>
+						<button
+							onClick={exportToExcel}
+							className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+						>
+							Export to Excel
+						</button>
 					</div>
 				</div>
 				<div className="w-full md:w-1/3 lg:w-1/4"></div>
