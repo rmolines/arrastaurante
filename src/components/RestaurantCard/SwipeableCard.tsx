@@ -16,7 +16,10 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
 	const rotate = useTransform(x, [-150, 0, 150], [-30, 0, 30]);
 	const opacity = useTransform(x, [-150, 0, 150], [0.5, 1, 0.5]);
 
-	const handleDragEnd = (event: any, info: any) => {
+	const handleDragEnd = (
+		event: MouseEvent | TouchEvent | PointerEvent,
+		info: { offset: { x: number } }
+	) => {
 		if (info.offset.x < -100) {
 			onSwipe("left", restaurant);
 		} else if (info.offset.x > 100) {
