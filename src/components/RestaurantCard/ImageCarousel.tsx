@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface ImageCarouselProps {
@@ -34,12 +33,11 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 							<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
 						</div>
 					)}
-					<Image
+					<img
 						src={imageUrl}
 						alt={`Restaurant image ${currentIndex + 1}`}
-						fill
-						style={{ objectFit: "cover" }}
-						onLoadingComplete={() => setIsLoading(false)}
+						className="w-full h-full object-cover"
+						onLoad={() => setIsLoading(false)}
 						onError={() => {
 							setIsLoading(false);
 							setImageError(true);
