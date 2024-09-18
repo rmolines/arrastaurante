@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Image from "next/image";
 
 interface ImageCarouselProps {
 	photos: { name: string }[];
@@ -12,17 +13,26 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 
 	const nextImage = () => {
 		setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
+		setIsLoading(true);
+		setImageError(false);
 	};
 
 	const prevImage = () => {
 		setCurrentIndex(
 			(prevIndex) => (prevIndex - 1 + photos.length) % photos.length
 		);
+		setIsLoading(true);
+		setImageError(false);
 	};
 
-	const imageUrl = `/api/getPlacePhoto?photoName=${encodeURIComponent(
-		photos[currentIndex]?.name || ""
-	)}`;
+	const getImageUrl = (photoName: string) => {
+		if (photoName.startsWith("http")) {
+			return photoName;
+		}
+		return `/api/getPlacePhoto?photoName=${encodeURIComponent(photoName)}`;
+	};
+
+	const imageUrl = getImageUrl(photos[currentIndex]?.name || "");
 
 	return (
 		<div className="relative h-48 border-b-4 border-black">
@@ -33,11 +43,12 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 							<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
 						</div>
 					)}
-					<img
+					<Image
 						src={imageUrl}
 						alt={`Restaurant image ${currentIndex + 1}`}
-						className="w-full h-full object-cover"
-						onLoad={() => setIsLoading(false)}
+						layout="fill"
+						objectFit="cover"
+						onLoadingComplete={() => setIsLoading(false)}
 						onError={() => {
 							setIsLoading(false);
 							setImageError(true);

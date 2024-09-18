@@ -18,8 +18,6 @@ export const fetchNearbyRestaurants = async (
 	if (priceFilter !== null) {
 		params.append("price", priceFilter.toString());
 	}
-	console.log(params.toString());
-
 	const response = await fetch(`/api/restaurants?${params.toString()}`);
 	if (!response.ok) {
 		throw new Error("Failed to fetch restaurants");

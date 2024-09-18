@@ -4,14 +4,14 @@ import RestaurantCard from "../RestaurantCard/RestaurantCard";
 
 interface LikedRestaurantsProps {
 	likedRestaurants: Restaurant[];
-	clearLikedRestaurants: () => void;
-	exportToExcel: () => void; // Add this line
+	clearAllRestaurants: () => void; // Updated to clear both
+	exportToExcel: () => void; // Existing prop
 }
 
 const LikedRestaurants = ({
 	likedRestaurants,
-	clearLikedRestaurants,
-	exportToExcel, // Add this line
+	clearAllRestaurants, // Updated prop
+	exportToExcel,
 }: LikedRestaurantsProps) => {
 	const [mounted, setMounted] = useState(false);
 
@@ -30,7 +30,7 @@ const LikedRestaurants = ({
 	return (
 		<div className="rounded-lg max-w-md">
 			<div className="flex justify-between items-center mb-4">
-				<h2 className="text-2xl font-bold text-gray-600">
+				<h2 className="text-2xl font-bold text-black">
 					Liked Restaurants
 				</h2>
 				<div className="flex space-x-2">
@@ -43,10 +43,10 @@ const LikedRestaurants = ({
 						Export
 					</button>
 					<button
-						onClick={clearLikedRestaurants}
+						onClick={clearAllRestaurants} // Updated to clear both
 						className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors border-4 border-black font-bold"
 					>
-						Reset
+						Reset All
 					</button>
 				</div>
 			</div>

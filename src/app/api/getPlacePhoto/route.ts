@@ -1,28 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-	const photoName = request.nextUrl.searchParams.get("photoName");
+	const photoReference = request.nextUrl.searchParams.get("photoName");
 
-	if (!photoName) {
+	if (!photoReference) {
 		return NextResponse.json(
-			{ error: "Invalid photo name" },
+			{ error: "Invalid photo reference" },
 			{ status: 400 }
 		);
 	}
 
-	const url = `https://places.googleapis.com/v1/${photoName}/media?key=${process.env.GOOGLE_MAPS_API_KEY}&maxHeightPx=400`;
+	const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+	const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${apiKey}`;
 
 	try {
 		const response = await fetch(url);
-		const arrayBuffer = await response.arrayBuffer();
 
-		return new NextResponse(arrayBuffer, {
+		if (!response.ok) {
+			throw new Error(`Failed to fetch image: ${response.statusText}`);
+		}
+
+		const imageBuffer = await response.arrayBuffer();
+		const headers = new Headers(response.headers);
+		headers.set("Cache-Control", "public, max-age=300");
+
+		return new NextResponse(imageBuffer, {
 			status: 200,
-			headers: {
-				"Content-Type": "image/jpeg",
-			},
+			headers: headers,
 		});
 	} catch (error) {
+		console.error("Failed to fetch image:", error);
 		return NextResponse.json(
 			{ error: "Failed to fetch image" },
 			{ status: 500 }

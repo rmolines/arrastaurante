@@ -26,17 +26,17 @@ const RestaurantDetails: React.FC<{
 			}`}
 		>
 			{!compact && (
-				<p className="text-gray-600 mb-2 h-12 overflow-hidden text-ellipsis">
+				<p className="text-gray-600 font-semibold mb-2 h-12 overflow-hidden text-ellipsis">
 					{restaurant.address}
 				</p>
 			)}
 			<div className="flex items-center mb-2">
 				<FaUtensils className="text-orange-500 mr-1" />
-				<span className="text-gray-700">
+				<span className="text-gray-700 font-semibold">
 					{restaurant.primary_type_display_name}
 				</span>
 				{compact && restaurant.distance && (
-					<span className="text-gray-500 ml-2">
+					<span className="text-gray-500 font-medium ml-2">
 						• {(restaurant.distance / 1000).toFixed(2)} km
 					</span>
 				)}
@@ -49,7 +49,7 @@ const RestaurantDetails: React.FC<{
 						href={restaurant.website}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-blue-600 hover:underline"
+						className="text-blue-600 hover:underline font-semibold"
 					>
 						Visit Website
 					</a>
@@ -57,14 +57,14 @@ const RestaurantDetails: React.FC<{
 			)}
 
 			{!compact && restaurant.distance && (
-				<p className="text-sm text-gray-500">
+				<p className="text-sm text-gray-500 font-medium">
 					{(restaurant.distance / 1000).toFixed(2)} km away
 				</p>
 			)}
 			{!compact && restaurant.phoneNumber && (
 				<div className="flex items-center">
 					<FaPhone className="text-gray-700 mr-1" />
-					<span className="text-gray-700">
+					<span className="text-gray-700 font-semibold">
 						{restaurant.phoneNumber}
 					</span>
 				</div>

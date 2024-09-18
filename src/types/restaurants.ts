@@ -55,16 +55,20 @@ export interface RestaurantCardProps {
 }
 
 export interface GooglePlace {
-	id: string;
-	displayName?: { text: string };
-	formattedAddress?: string;
+	place_id: string;
+	name: string;
+	vicinity?: string;
+	geometry?: {
+		location: {
+			lat: number;
+			lng: number;
+		};
+	};
 	rating?: number;
-	priceLevel?: number;
+	price_level?: number;
 	types?: string[];
-	primaryTypeDisplayName?: { text: string };
-	currentOpeningHours?: OpeningHours;
+	opening_hours?: OpeningHours;
 	photos?: Photo[];
-	websiteUri?: string;
-	reviews?: Review[];
-	location?: { latitude: number; longitude: number };
+	website?: string;
+	reviews?: Review[]; // Note: Nearby Search doesn't return reviews
 }
