@@ -24,7 +24,7 @@ export function RestaurantCard({
 
 	if (compact) {
 		return (
-			<div className="card bg-white shadow-lg rounded-xl overflow-hidden flex flex-row w-full h-32">
+			<div className="card bg-white shadow-lg rounded-xl overflow-hidden flex flex-row w-full h-32 border-4 border-black">
 				<div className="w-1/3 h-full">
 					<ImageCarousel photos={restaurant.photos || []} />
 				</div>
@@ -67,7 +67,7 @@ export function RestaurantCard({
 			style={{ x, rotate, opacity }}
 			onDragEnd={handleDragEnd}
 		>
-			<div className="card bg-white w-80 max-w-full shadow-lg rounded-xl overflow-hidden">
+			<div className="card bg-white w-80 max-w-full shadow-lg rounded-xl overflow-hidden border-4 border-black">
 				<ImageCarousel photos={restaurant.photos || []} />
 				<div className="p-4">
 					<h3 className="text-2xl font-bold mb-2 text-gray-800 truncate">

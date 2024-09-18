@@ -130,10 +130,10 @@ export default function Home() {
 					rel="stylesheet"
 				/>
 			</Head>
-			<main className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-100 to-white">
+			<main className="flex flex-col md:flex-row min-h-screen bg-yellow-400">
 				<div className="w-full md:w-1/3 lg:w-1/4"></div>
 				<div className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center">
-					<h1 className="text-4xl md:text-5xl font-bold mb-8 mt-4 text-blue-600 font-pacifico">
+					<h1 className="text-4xl md:text-5xl font-bold mb-8 mt-4 text-black font-pacifico">
 						Arrastaurante
 					</h1>
 					<div className="mb-4 flex items-center">
@@ -142,11 +142,11 @@ export default function Home() {
 							value={postalCode}
 							onChange={(e) => setPostalCode(e.target.value)}
 							placeholder="Enter postal code"
-							className="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
 						/>
 						<button
 							onClick={handlePostalCodeSearch}
-							className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 transition-colors"
+							className="bg-black text-white px-4 py-2 rounded-r-lg hover:bg-gray-600 transition-colors font-bold"
 						>
 							Search
 						</button>
@@ -171,13 +171,8 @@ export default function Home() {
 						<LikedRestaurants
 							likedRestaurants={likedRestaurants}
 							clearLikedRestaurants={clearLikedRestaurants}
+							exportToExcel={exportToExcel}
 						/>
-						<button
-							onClick={exportToExcel}
-							className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
-						>
-							Export to Excel
-						</button>
 					</div>
 				</div>
 				<div className="w-full md:w-1/3 lg:w-1/4"></div>
