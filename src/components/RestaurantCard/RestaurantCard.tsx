@@ -25,7 +25,7 @@ export function RestaurantCard({
 	if (compact) {
 		return (
 			<div className="card bg-white shadow-lg rounded-xl overflow-hidden flex flex-row w-full h-32 border-4 border-black">
-				<div className="w-1/3 h-full">
+				<div className="w-1/3 h-full border-r-4 border-black">
 					<ImageCarousel photos={restaurant.photos || []} />
 				</div>
 				<div className="w-2/3 p-3 flex flex-col justify-between">
@@ -33,7 +33,7 @@ export function RestaurantCard({
 						<h3 className="text-lg font-semibold mb-1 text-gray-800 truncate">
 							{restaurant.name}
 						</h3>
-						<div className="flex items-center justify-between mb-1">
+						<div className="flex flex-col mb-1">
 							<StarRating
 								rating={restaurant.rating ?? undefined}
 							/>
@@ -76,13 +76,20 @@ export function RestaurantCard({
 					<StarRating rating={restaurant.rating ?? undefined} />
 					<PriceLevel level={restaurant.price_level?.toString()} />
 				</div>
-				<RestaurantDetails restaurant={restaurant} compact={false} />
-				<ActionButtons
-					handleSwipe={(direction) =>
-						handleSwipe?.(direction, restaurant)
-					}
-					restaurant={restaurant}
-				/>
+				<div className="border-t-4 border-black">
+					<RestaurantDetails
+						restaurant={restaurant}
+						compact={false}
+					/>
+				</div>
+				<div className="border-t-4 border-black">
+					<ActionButtons
+						handleSwipe={(direction) =>
+							handleSwipe?.(direction, restaurant)
+						}
+						restaurant={restaurant}
+					/>
+				</div>
 			</div>
 		</motion.div>
 	);

@@ -25,7 +25,7 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 	)}`;
 
 	return (
-		<div className="relative h-48">
+		<div className="relative h-48 border-b-4 border-black">
 			{photos.length > 0 ? (
 				<>
 					{isLoading && !imageError && (

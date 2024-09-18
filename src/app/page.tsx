@@ -136,17 +136,17 @@ export default function Home() {
 					<h1 className="text-4xl md:text-5xl font-bold mb-8 mt-4 text-black font-pacifico">
 						Arrastaurante
 					</h1>
-					<div className="mb-4 flex items-center">
+					<div className="mb-4 flex items-center border-4 border-black rounded-lg overflow-hidden">
 						<input
 							type="text"
 							value={postalCode}
 							onChange={(e) => setPostalCode(e.target.value)}
 							placeholder="Enter postal code"
-							className="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+							className="px-4 py-2 focus:outline-none flex-grow text-black"
 						/>
 						<button
 							onClick={handlePostalCodeSearch}
-							className="bg-black text-white px-4 py-2 rounded-r-lg hover:bg-gray-600 transition-colors font-bold"
+							className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors font-bold"
 						>
 							Search
 						</button>
@@ -167,7 +167,7 @@ export default function Home() {
 							</p>
 						)}
 					</div>
-					<div className="w-full max-w-md mt-8">
+					<div className="w-full max-w-md mt-8 mb-16">
 						<LikedRestaurants
 							likedRestaurants={likedRestaurants}
 							clearLikedRestaurants={clearLikedRestaurants}

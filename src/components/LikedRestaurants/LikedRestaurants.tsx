@@ -38,13 +38,13 @@ const LikedRestaurants = ({
 					{/* Change to flex and add space-x-2 */}
 					<button
 						onClick={exportToExcel}
-						className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+						className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors border-4 border-black font-bold"
 					>
 						Export
 					</button>
 					<button
 						onClick={clearLikedRestaurants}
-						className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+						className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors border-4 border-black font-bold"
 					>
 						Reset
 					</button>
