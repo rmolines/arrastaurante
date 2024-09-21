@@ -42,9 +42,14 @@ export async function GET(request: NextRequest) {
 			response.headers.get("Content-Type") || "image/jpeg"
 		); // Ensure Content-Type is set
 
-		return new NextResponse(buffer, {
+		// Instead of returning the buffer directly, we'll return a Response object
+		return new Response(buffer, {
 			status: 200,
-			headers: headers,
+			headers: {
+				"Content-Type":
+					response.headers.get("Content-Type") || "image/jpeg",
+				"Cache-Control": "public, max-age=300",
+			},
 		});
 	} catch (error) {
 		console.error("Failed to fetch image:", error);
