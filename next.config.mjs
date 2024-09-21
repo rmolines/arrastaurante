@@ -6,7 +6,7 @@ const nextConfig = {
 				protocol: "https",
 				hostname: "places.googleapis.com",
 				port: "",
-				pathname: "/v1/places/**",
+				pathname: "/v1/**",
 			},
 		],
 		domains: ["places.googleapis.com"],
