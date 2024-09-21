@@ -10,6 +10,7 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 	const [imageError, setImageError] = useState(false);
+	const [fallbackToOriginal, setFallbackToOriginal] = useState(false);
 
 	const nextImage = () => {
 		setIsLoading(true);
@@ -36,6 +37,15 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 
 	const imageUrl = getImageUrl(photos[currentIndex]?.name || "");
 
+	const handleImageError = () => {
+		setIsLoading(false);
+		if (!fallbackToOriginal) {
+			setFallbackToOriginal(true);
+		} else {
+			setImageError(true);
+		}
+	};
+
 	return (
 		<div className="relative h-48 border-b-4 border-black">
 			{photos.length > 0 ? (
@@ -47,17 +57,18 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 					)}
 					{!imageError ? (
 						<Image
-							src={imageUrl}
+							src={
+								fallbackToOriginal
+									? photos[currentIndex]?.name
+									: imageUrl
+							}
 							alt={`Restaurant image ${currentIndex + 1}`}
 							fill
 							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 							style={{ objectFit: "cover" }}
 							priority
 							onLoad={() => setIsLoading(false)}
-							onError={() => {
-								setIsLoading(false);
-								setImageError(true);
-							}}
+							onError={handleImageError}
 						/>
 					) : (
 						<div className="absolute inset-0 flex items-center justify-center bg-gray-200">
