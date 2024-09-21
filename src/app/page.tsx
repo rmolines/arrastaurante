@@ -36,8 +36,11 @@ export default function Home() {
 	>("dislikedRestaurants", []);
 	const [postalCode, setPostalCode] = useState("");
 	const [error, setError] = useState<string | null>(null);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [priceFilter, setPriceFilter] = useState<number | null>(null); // Any price
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [distanceFilter, setDistanceFilter] = useState<number>(1); // 1 km
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [ratingFilter, setRatingFilter] = useState<number>(4); // 4 stars and above
 	const [isLoading, setIsLoading] = useState<boolean>(false); // New loading state
 	const [resetMessage, setResetMessage] = useState<string | null>(null); // Optional feedback

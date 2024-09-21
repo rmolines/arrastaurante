@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 		let nextPageToken: string | undefined = undefined;
 
 		do {
-			const requestBody: any = {
+			const requestBody: RequestBody = {
 				locationRestriction: {
 					circle: {
 						center: {
@@ -161,4 +161,22 @@ function parsePriceLevel(priceLevel: string | undefined): number {
 		default:
 			return 0;
 	}
+}
+
+interface RequestBody {
+	locationRestriction: {
+		circle: {
+			center: {
+				latitude: number;
+				longitude: number;
+			};
+			radius: number;
+		};
+	};
+	includedTypes: string[];
+	excludedTypes: string[];
+	languageCode: string;
+	regionCode: string;
+	maxPriceLevelEnum?: string;
+	pageToken?: string;
 }
