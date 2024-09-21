@@ -29,7 +29,9 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 		if (photoName.startsWith("http")) {
 			return photoName;
 		}
-		return `/api/getPlacePhoto?photoName=${encodeURIComponent(photoName)}`;
+		// Use URLSearchParams to properly handle the encoding
+		const params = new URLSearchParams({ photoName });
+		return `/api/getPlacePhoto?${params.toString()}`;
 	};
 
 	const imageUrl = getImageUrl(photos[currentIndex]?.name || "");
