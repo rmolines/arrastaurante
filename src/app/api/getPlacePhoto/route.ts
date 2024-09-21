@@ -34,11 +34,15 @@ export async function GET(request: NextRequest) {
 		}
 
 		// The response is now directly the image data
-		const imageBuffer = await response.arrayBuffer();
+		const buffer = await response.arrayBuffer();
 		const headers = new Headers(response.headers);
 		headers.set("Cache-Control", "public, max-age=300");
+		headers.set(
+			"Content-Type",
+			response.headers.get("Content-Type") || "image/jpeg"
+		); // Ensure Content-Type is set
 
-		return new NextResponse(imageBuffer, {
+		return new NextResponse(buffer, {
 			status: 200,
 			headers: headers,
 		});

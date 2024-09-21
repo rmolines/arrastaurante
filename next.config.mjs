@@ -9,6 +9,7 @@ const nextConfig = {
 				pathname: "/v1/places/**",
 			},
 		],
+		domains: ["places.googleapis.com"],
 	},
 	typescript: {
 		// !! WARN !!
