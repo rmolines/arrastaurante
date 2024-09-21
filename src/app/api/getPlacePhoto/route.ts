@@ -1,25 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-	const photoReference = request.nextUrl.searchParams.get("photoName");
+	const photoName = request.nextUrl.searchParams.get("photoName");
 
-	if (!photoReference) {
+	if (!photoName) {
 		return NextResponse.json(
-			{ error: "Invalid photo reference" },
+			{ error: "Invalid photo name" },
 			{ status: 400 }
 		);
 	}
 
 	const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-	const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${apiKey}`;
+	if (!apiKey) {
+		throw new Error("API key is not defined");
+	}
+
+	// Updated URL to use the new Places API endpoint
+	const url = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=400&key=${apiKey}`;
 
 	try {
-		const response = await fetch(url);
+		const response = await fetch(url, {
+			headers: {
+				// Updated header name
+				"X-Goog-Api-Key": apiKey,
+				// Removed unnecessary header
+			},
+		});
 
 		if (!response.ok) {
-			throw new Error(`Failed to fetch image: ${response.statusText}`);
+			throw new Error(
+				`Failed to fetch photo data: ${response.statusText}`
+			);
 		}
 
+		// The response is now directly the image data
 		const imageBuffer = await response.arrayBuffer();
 		const headers = new Headers(response.headers);
 		headers.set("Cache-Control", "public, max-age=300");

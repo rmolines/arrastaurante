@@ -41,6 +41,8 @@ export default function Home() {
 	const [ratingFilter, setRatingFilter] = useState<number>(4); // 4 stars and above
 	const [isLoading, setIsLoading] = useState<boolean>(false); // New loading state
 	const [resetMessage, setResetMessage] = useState<string | null>(null); // Optional feedback
+	const [locationDisplay, setLocationDisplay] = useState<string>("");
+	const [permissionDenied, setPermissionDenied] = useState<boolean>(false); // New state for permission
 
 	// References to hold the latest liked and disliked restaurants
 	const likedRestaurantsRef = useRef(likedRestaurants);
@@ -68,12 +70,6 @@ export default function Home() {
 					distanceFilter,
 					ratingFilter
 				);
-				console.log("Fetched Restaurants:", data); // Debugging
-				console.log("Liked Restaurants:", likedRestaurantsRef.current); // Debugging liked restaurants
-				console.log(
-					"Disliked Restaurants:",
-					dislikedRestaurantsRef.current
-				); // Debugging disliked restaurants
 
 				// Exclude liked and disliked restaurants using refs
 				const filtered = data.filter(
@@ -86,11 +82,9 @@ export default function Home() {
 								disliked.place_id === restaurant.place_id
 						)
 				);
-				console.log("Filtered Restaurants:", filtered); // Debugging
 
 				// Shuffle the filtered restaurants
 				const shuffled = shuffleArray(filtered);
-				console.log("Shuffled Restaurants:", shuffled); // Debugging
 
 				setRestaurants(shuffled);
 				setCurrentRestaurantIndex(0); // Reset index
@@ -139,10 +133,15 @@ export default function Home() {
 					(resolve, reject) => {
 						navigator.geolocation.getCurrentPosition(
 							resolve,
-							reject,
+							(err) => {
+								if (err.code === err.PERMISSION_DENIED) {
+									setPermissionDenied(true); // Update permission state
+								}
+								reject(err);
+							},
 							{
 								enableHighAccuracy: true,
-								timeout: 5000,
+								timeout: 10000, // Increased timeout for better reliability
 								maximumAge: 0,
 							}
 						);
@@ -193,6 +192,42 @@ export default function Home() {
 		getLocation();
 	}, []);
 
+	useEffect(() => {
+		if (location) {
+			// Update location display when location changes
+			setLocationDisplay(
+				`${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`
+			);
+		}
+	}, [location]);
+
+	const updateLocationDisplay = useCallback(async () => {
+		if (location) {
+			try {
+				const response = await fetch(
+					`/api/reverseGeocode?lat=${location.lat}&lng=${location.lng}`
+				);
+				if (!response.ok) {
+					throw new Error("Failed to fetch location data");
+				}
+				const data = await response.json();
+				setLocationDisplay(
+					data.postalCode ||
+						`${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`
+				);
+			} catch (error) {
+				console.error("Error fetching location display:", error);
+				setLocationDisplay(
+					`${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`
+				);
+			}
+		}
+	}, [location]);
+
+	useEffect(() => {
+		updateLocationDisplay();
+	}, [location, updateLocationDisplay]);
+
 	const handleSwipe = (direction: string, restaurant: Restaurant) => {
 		console.log(`Swiping ${direction} on restaurant: ${restaurant.name}`);
 		if (direction === "right") {
@@ -225,6 +260,11 @@ export default function Home() {
 		XLSX.writeFile(workbook, "liked_restaurants.xlsx");
 	};
 
+	const requestGeolocation = () => {
+		setPermissionDenied(false); // Reset permission state
+		getLocation();
+	};
+
 	return (
 		<>
 			<Head>
@@ -239,6 +279,18 @@ export default function Home() {
 					<h1 className="text-4xl md:text-5xl font-bold mb-8 mt-4 text-black font-pacifico">
 						Arrastaurante
 					</h1>
+					{/* Display location or prompt for permission */}
+					{locationDisplay && (
+						<p className="mb-4 text-black">
+							Current location: {locationDisplay}
+						</p>
+					)}
+					{permissionDenied && (
+						<p className="mb-4 text-red-500">
+							Geolocation permission denied. Please enter your
+							postal code.
+						</p>
+					)}
 					<div className="mb-4 flex items-center border-4 border-black rounded-lg overflow-hidden">
 						<input
 							type="text"
@@ -285,6 +337,14 @@ export default function Home() {
 						/>
 						{/* Add a component or button to manage disliked restaurants if needed */}
 					</div>
+					{!location && !permissionDenied && (
+						<button
+							onClick={requestGeolocation}
+							className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors font-bold"
+						>
+							Allow Location Access
+						</button>
+					)}
 				</div>
 				<div className="w-full md:w-1/3 lg:w-1/4"></div>
 			</main>

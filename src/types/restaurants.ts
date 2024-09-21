@@ -16,6 +16,12 @@ export interface Review {
 	text: string;
 }
 
+interface GooglePhoto {
+	name: string;
+	widthPx: number;
+	heightPx: number;
+}
+
 export interface Restaurant {
 	place_id: string;
 	name: string;

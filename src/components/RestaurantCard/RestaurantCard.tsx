@@ -37,9 +37,7 @@ export function RestaurantCard({
 							<StarRating
 								rating={restaurant.rating ?? undefined}
 							/>
-							<PriceLevel
-								level={restaurant.price_level?.toString()}
-							/>
+							<PriceLevel level={restaurant.price_level} />
 						</div>
 					</div>
 					<RestaurantDetails restaurant={restaurant} compact={true} />

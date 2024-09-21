@@ -22,77 +22,105 @@ export async function GET(request: Request) {
 	}
 
 	const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-	const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json`;
+	const apiUrl = "https://places.googleapis.com/v1/places:searchNearby";
 
 	try {
-		const params = new URLSearchParams({
-			location: `${lat},${lng}`,
-			radius: distance
-				? (parseFloat(distance) * 1000).toString()
-				: "1000", // Default 1km
-			type: "restaurant",
-			key: apiKey || "",
-		});
+		const allPlaces: GooglePlace[] = [];
+		let nextPageToken: string | undefined = undefined;
 
-		if (price) {
-			params.append("minprice", price);
-			// Google Places API uses minprice and maxprice as integers (0-4)
-		}
+		do {
+			const requestBody: any = {
+				locationRestriction: {
+					circle: {
+						center: {
+							latitude: parseFloat(lat),
+							longitude: parseFloat(lng),
+						},
+						radius: distance ? parseFloat(distance) * 1000 : 1000, // Convert km to meters
+					},
+				},
+				includedTypes: ["restaurant"],
+				excludedTypes: ["night_club"],
+				languageCode: "pt-BR", // Add this line to set the language to Brazilian Portuguese
+				regionCode: "pt",
+			};
 
-		if (rating) {
-			// Google Places API doesn't support rating filter directly.
-			// Filtering will be handled after fetching.
-		}
+			if (price) {
+				requestBody.maxPriceLevelEnum = `PRICE_LEVEL_${price}`;
+			}
 
-		const response = await fetch(`${apiUrl}?${params.toString()}`, {
-			method: "GET",
-		});
+			if (nextPageToken) {
+				requestBody.pageToken = nextPageToken;
+			}
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			console.error("API error response:", errorText);
-			throw new Error(
-				`Error fetching restaurant data: ${response.status} ${response.statusText}`
-			);
-		}
+			const response = await fetch(apiUrl, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-Goog-Api-Key": apiKey || "",
+					"X-Goog-FieldMask":
+						"places.id,places.displayName,places.formattedAddress,places.rating,places.priceLevel,places.types,places.businessStatus,places.photos,places.primaryTypeDisplayName,places.location",
+				},
+				body: JSON.stringify(requestBody),
+			});
 
-		const data = await response.json();
+			if (!response.ok) {
+				const errorText = await response.text();
+				console.error("API error response:", errorText);
+				throw new Error(
+					`Error fetching restaurant data: ${response.status} ${response.statusText}`
+				);
+			}
 
-		if (!data.results || !Array.isArray(data.results)) {
-			console.error("Unexpected API response structure:", data);
-			return NextResponse.json(
-				{ error: "Unexpected API response structure" },
-				{ status: 500 }
-			);
-		}
+			const data = await response.json();
+
+			if (!data.places || !Array.isArray(data.places)) {
+				console.error("Unexpected API response structure:", data);
+				return NextResponse.json(
+					{ error: "Unexpected API response structure" },
+					{ status: 500 }
+				);
+			}
+
+			allPlaces.push(...data.places);
+
+			nextPageToken = data.nextPageToken;
+
+			console.log(data);
+
+			// Google recommends a short delay before using nextPageToken
+			if (nextPageToken) {
+				await new Promise((resolve) => setTimeout(resolve, 2000));
+			}
+		} while (nextPageToken);
 
 		// Process and filter the results
-		let detailedResults: Restaurant[] = data.results.map(
+		let detailedResults: Restaurant[] = allPlaces.map(
 			(place: GooglePlace): Restaurant => ({
-				place_id: place.place_id,
-				name: place.name || "",
-				address: place.vicinity || "",
+				place_id: place.id,
+				name: place.displayName?.text || "",
+				address: place.formattedAddress || "",
 				rating: place.rating || 0,
-				price_level: place.price_level || 0,
+				price_level: parsePriceLevel(place.priceLevel),
 				types: place.types || [],
-				primary_type_display_name: place.types?.[0] || "Restaurant",
-				opening_hours: place.opening_hours,
+				primary_type_display_name:
+					place.primaryTypeDisplayName?.text || "Restaurant",
 				photos: place.photos
-					? place.photos.map((photo) => ({
-							name: photo.photo_reference,
-							widthPx: photo.width,
-							heightPx: photo.height,
+					? place.photos.map((photo: GooglePhoto) => ({
+							name: photo.name,
+							widthPx: photo.widthPx,
+							heightPx: photo.heightPx,
 					  }))
 					: [],
-				website: place.website || "",
-				reviews: [], // Google Places Nearby Search doesn't return reviews
-				latitude: place.geometry?.location.lat,
-				longitude: place.geometry?.location.lng,
+				website: "", // Not available in this API response
+				reviews: [], // Not available in this API response
+				latitude: place.location?.latitude,
+				longitude: place.location?.longitude,
 				distance: calculateDistance(
 					parseFloat(lat),
 					parseFloat(lng),
-					place.geometry?.location.lat || 0,
-					place.geometry?.location.lng || 0
+					place.location?.latitude || 0,
+					place.location?.longitude || 0
 				),
 			})
 		);
@@ -120,15 +148,15 @@ export async function GET(request: Request) {
 // Helper function
 function parsePriceLevel(priceLevel: string | undefined): number {
 	switch (priceLevel) {
-		case "0":
+		case "PRICE_LEVEL_FREE":
 			return 0;
-		case "1":
+		case "PRICE_LEVEL_INEXPENSIVE":
 			return 1;
-		case "2":
+		case "PRICE_LEVEL_MODERATE":
 			return 2;
-		case "3":
+		case "PRICE_LEVEL_EXPENSIVE":
 			return 3;
-		case "4":
+		case "PRICE_LEVEL_VERY_EXPENSIVE":
 			return 4;
 		default:
 			return 0;

@@ -1,8 +1,4 @@
-import {
-	FaThumbsUp,
-	FaThumbsDown,
-	FaClock as FaMaybeLater,
-} from "react-icons/fa";
+import { FaTimes, FaBookmark } from "react-icons/fa";
 import { RestaurantCardProps } from "../../types/restaurants";
 
 const ActionButtons = ({ handleSwipe, restaurant }: RestaurantCardProps) => {
@@ -12,19 +8,14 @@ const ActionButtons = ({ handleSwipe, restaurant }: RestaurantCardProps) => {
 				onClick={() => handleSwipe("left", restaurant)}
 				className="bg-red-500 text-white p-3 rounded-full border-4 border-black"
 			>
-				<FaThumbsDown />
-			</button>
-			<button
-				onClick={() => handleSwipe("up", restaurant)}
-				className="bg-yellow-500 text-white p-3 rounded-full border-4 border-black"
-			>
-				<FaMaybeLater />
+				<FaTimes />
 			</button>
 			<button
 				onClick={() => handleSwipe("right", restaurant)}
-				className="bg-green-500 text-white p-3 rounded-full border-4 border-black"
+				className="bg-blue-500 text-white p-3 rounded-full border-4 border-black"
+				// className="bg-green-500 text-white p-3 rounded-full border-4 border-black"
 			>
-				<FaThumbsUp />
+				<FaBookmark />
 			</button>
 		</div>
 	);
