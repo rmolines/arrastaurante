@@ -45,20 +45,21 @@ const ImageCarousel = ({ photos }: ImageCarouselProps) => {
 							<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
 						</div>
 					)}
-					<Image
-						src={imageUrl}
-						alt={`Restaurant image ${currentIndex + 1}`}
-						fill
-						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-						style={{ objectFit: "cover" }}
-						priority
-						onLoad={() => setIsLoading(false)}
-						onError={() => {
-							setIsLoading(false);
-							setImageError(true);
-						}}
-					/>
-					{imageError && (
+					{!imageError ? (
+						<Image
+							src={imageUrl}
+							alt={`Restaurant image ${currentIndex + 1}`}
+							fill
+							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+							style={{ objectFit: "cover" }}
+							priority
+							onLoad={() => setIsLoading(false)}
+							onError={() => {
+								setIsLoading(false);
+								setImageError(true);
+							}}
+						/>
+					) : (
 						<div className="absolute inset-0 flex items-center justify-center bg-gray-200">
 							<p className="text-gray-500">
 								Failed to load image
