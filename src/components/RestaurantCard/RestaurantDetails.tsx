@@ -1,11 +1,6 @@
 import React from "react";
 import { Restaurant } from "@/types/restaurants";
-import {
-	FaDirections,
-	FaExternalLinkAlt,
-	FaGlobe,
-	FaUtensils,
-} from "react-icons/fa";
+import { FaDirections, FaGlobe, FaUtensils } from "react-icons/fa";
 
 const RestaurantDetails: React.FC<{
 	restaurant: Restaurant;
