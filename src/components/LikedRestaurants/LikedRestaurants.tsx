@@ -30,9 +30,7 @@ const LikedRestaurants = ({
 	return (
 		<div className="rounded-lg max-w-md">
 			<div className="flex justify-between items-center mb-4">
-				<h2 className="text-2xl font-bold text-black">
-					Liked Restaurants
-				</h2>
+				<h2 className="text-2xl font-bold text-black">Salvos</h2>
 				<div className="flex space-x-2">
 					{" "}
 					{/* Change to flex and add space-x-2 */}
@@ -40,18 +38,20 @@ const LikedRestaurants = ({
 						onClick={exportToExcel}
 						className="bg-blue-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors border-4 border-black font-bold"
 					>
-						Export
+						Exportar
 					</button>
 					<button
 						onClick={clearAllRestaurants} // Updated to clear both
 						className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors border-4 border-black font-bold"
 					>
-						Reset All
+						Resetar Tudo
 					</button>
 				</div>
 			</div>
 			{restaurantsArray.length === 0 ? (
-				<p className="text-gray-600">No liked restaurants yet.</p>
+				<p className="text-gray-600">
+					Nenhum restaurante curtido ainda.
+				</p>
 			) : (
 				<ul className="space-y-4">
 					{restaurantsArray.map((restaurant) => (

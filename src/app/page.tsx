@@ -94,7 +94,7 @@ export default function Home() {
 			} catch (error) {
 				console.error("Error fetching restaurant data:", error);
 				setError(
-					"Error fetching restaurant data. Please try again later."
+					"Erro ao buscar dados dos restaurantes. Por favor, tente novamente mais tarde."
 				);
 			} finally {
 				setIsLoading(false);
@@ -121,10 +121,10 @@ export default function Home() {
 			if (data.lat && data.lng) {
 				setLocation({ lat: data.lat, lng: data.lng });
 			} else {
-				setError("Invalid postal code");
+				setError("Código postal inválido");
 			}
 		} catch (error) {
-			setError("Error fetching location data");
+			setError("Erro ao buscar dados de localização");
 		}
 	};
 
@@ -179,7 +179,7 @@ export default function Home() {
 		} catch (error) {
 			console.error("Error fetching IP-based location:", error);
 			setError(
-				"Unable to determine your location. Please enter a postal code."
+				"Não foi possível determinar sua localização. Por favor, insira um código postal."
 			);
 		}
 	};
@@ -251,7 +251,7 @@ export default function Home() {
 	const resetAllRestaurants = async () => {
 		setLikedRestaurants([]);
 		setDislikedRestaurants([]);
-		setResetMessage("All restaurants have been reset!");
+		setResetMessage("Todos os restaurantes foram reiniciados!");
 		await loadRestaurants(); // Refetch restaurants
 		setTimeout(() => setResetMessage(null), 3000); // Hide message after 3 seconds
 	};
@@ -259,8 +259,12 @@ export default function Home() {
 	const exportToExcel = () => {
 		const worksheet = XLSX.utils.json_to_sheet(likedRestaurants);
 		const workbook = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(workbook, worksheet, "Liked Restaurants");
-		XLSX.writeFile(workbook, "liked_restaurants.xlsx");
+		XLSX.utils.book_append_sheet(
+			workbook,
+			worksheet,
+			"Restaurantes Gostados"
+		);
+		XLSX.writeFile(workbook, "restaurantes_gostados.xlsx");
 	};
 
 	const requestGeolocation = () => {
@@ -285,13 +289,13 @@ export default function Home() {
 					{/* Display location or prompt for permission */}
 					{locationDisplay && (
 						<p className="mb-4 text-black">
-							Current location: {locationDisplay}
+							Localização atual: {locationDisplay}
 						</p>
 					)}
 					{permissionDenied && (
 						<p className="mb-4 text-red-500">
-							Geolocation permission denied. Please enter your
-							postal code.
+							Permissão de geolocalização negada. Por favor,
+							insira seu código postal.
 						</p>
 					)}
 					<div className="mb-4 flex items-center border-4 border-black rounded-lg overflow-hidden">
@@ -299,21 +303,21 @@ export default function Home() {
 							type="text"
 							value={postalCode}
 							onChange={(e) => setPostalCode(e.target.value)}
-							placeholder="Enter postal code"
+							placeholder="Insira o código postal"
 							className="px-4 py-2 focus:outline-none flex-grow text-black"
 						/>
 						<button
 							onClick={handlePostalCodeSearch}
 							className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors font-bold"
 						>
-							Search
+							Buscar
 						</button>
 					</div>
 					{error && <p className="text-red-500 mb-4">{error}</p>}
 					<div className="swipe-container flex flex-col items-center justify-center w-full max-w-md mx-auto">
 						{isLoading ? (
 							<p className="text-lg text-black italic">
-								Loading restaurants...
+								Carregando restaurantes...
 							</p>
 						) : restaurants.length > 0 && currentRestaurant ? (
 							<RestaurantCard
@@ -323,7 +327,7 @@ export default function Home() {
 							/>
 						) : (
 							<p className="text-lg text-gray-600 italic">
-								No more restaurants to show
+								Não há mais restaurantes para exibir
 							</p>
 						)}
 					</div>
@@ -345,7 +349,7 @@ export default function Home() {
 							onClick={requestGeolocation}
 							className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors font-bold"
 						>
-							Allow Location Access
+							Permitir Acesso à Localização
 						</button>
 					)}
 				</div>

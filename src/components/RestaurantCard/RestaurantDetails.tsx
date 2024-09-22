@@ -1,6 +1,11 @@
 import React from "react";
 import { Restaurant } from "@/types/restaurants";
-import { FaDirections, FaGlobe, FaUtensils } from "react-icons/fa";
+import {
+	FaDirections,
+	FaExternalLinkAlt,
+	FaGlobe,
+	FaUtensils,
+} from "react-icons/fa";
 
 const RestaurantDetails: React.FC<{
 	restaurant: Restaurant;
@@ -34,11 +39,11 @@ const RestaurantDetails: React.FC<{
 				compact ? "text-sm" : ""
 			}`}
 		>
-			{!compact && (
+			{/* {!compact && (
 				<p className="text-gray-600 font-semibold mb-2 h-12 overflow-hidden text-ellipsis">
 					{restaurant.address}
 				</p>
-			)}
+			)} */}
 			<div className="flex items-center mb-2">
 				<FaUtensils className="text-orange-500 mr-1" />
 				<span className="text-gray-700 font-semibold">
@@ -66,16 +71,19 @@ const RestaurantDetails: React.FC<{
 			)}
 
 			{!compact && restaurant.distance && (
-				<div className="flex items-center text-blue-500 font-semibold">
+				<div className="flex items-center text-blue-500 font-semibold hover:underline group relative">
 					<FaDirections className="mr-1" />
 					<a
 						href={getDirectionsUrl()}
 						target="_blank"
 						rel="noopener noreferrer"
+						className="flex items-center"
 					>
 						<p className="text-sm">
-							{(restaurant.distance / 1000).toFixed(2)} km away
+							{(restaurant.distance / 1000).toFixed(1)} km de
+							distância
 						</p>
+						{/* <FaExternalLinkAlt className="ml-1 text-xs" /> */}
 					</a>
 				</div>
 			)}
