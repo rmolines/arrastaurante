@@ -265,7 +265,7 @@ export default function Home() {
 					rel="stylesheet"
 				/>
 			</Head>
-			<main className="flex flex-col min-h-screen bg-yellow-400 py-16">
+			<main className="flex flex-col min-h-screen bg-yellow-400 py-16 px-4">
 				<header className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
 					<h1 className="text-4xl md:text-5xl font-bold mb-2 text-black font-pacifico">
 						arrastaurante
