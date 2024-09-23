@@ -256,11 +256,6 @@ export default function Home() {
 		XLSX.writeFile(workbook, "restaurantes_gostados.xlsx");
 	};
 
-	const requestGeolocation = () => {
-		setPermissionDenied(false); // Reset permission state
-		getLocation();
-	};
-
 	return (
 		<>
 			<Head>
