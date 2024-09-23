@@ -276,26 +276,25 @@ export default function Home() {
 					</h2>
 				</header>
 				<section className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center justify-center mx-auto max-w-md">
-					{permissionDenied ? (
-						<div className="mb-4 w-full">
-							<div className="flex items-center border-4 border-black rounded-lg overflow-hidden">
-								<input
-									type="text"
-									value={postalCode}
-									onChange={(e) =>
-										setPostalCode(e.target.value)
-									}
-									placeholder="Insira o código postal"
-									className="px-4 py-2 focus:outline-none flex-grow text-black"
-								/>
-								<button
-									onClick={handlePostalCodeSearch}
-									className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors font-bold"
-								>
-									Buscar
-								</button>
-							</div>
+					<div className="mb-4 w-full">
+						<div className="flex items-center border-4 border-black rounded-lg overflow-hidden">
+							<input
+								type="text"
+								value={postalCode}
+								onChange={(e) => setPostalCode(e.target.value)}
+								placeholder="Insira o código postal"
+								className="px-4 py-2 focus:outline-none flex-grow text-black"
+							/>
+							<button
+								onClick={handlePostalCodeSearch}
+								className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors font-bold"
+							>
+								Buscar
+							</button>
 						</div>
+					</div>
+					{permissionDenied ? (
+						<></>
 					) : (
 						!location && (
 							<button
