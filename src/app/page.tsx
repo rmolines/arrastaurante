@@ -1,10 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 "use client";
 
-import Head from "next/head";
 import { useEffect, useState, useCallback, useRef } from "react";
+import Head from "next/head";
+import { JsonLd } from "react-schemaorg";
+import { Restaurant as SchemaRestaurant } from "schema-dts";
 import RestaurantCard from "../components/RestaurantCard/RestaurantCard";
 import dynamic from "next/dynamic";
 import { fetchNearbyRestaurants } from "../utils/fetchRestaurants";
@@ -12,7 +11,7 @@ import { Restaurant } from "../types/restaurants";
 import useLocalStorage from "../hooks/useLocalStorage";
 import * as XLSX from "xlsx";
 import { fetchIpBasedLocation } from "../utils/fetchIpBasedLocation";
-import { shuffleArray } from "../utils/arrayUtils"; // Import shuffleArray
+import { shuffleArray } from "../utils/arrayUtils";
 
 const LikedRestaurants = dynamic(
 	() => import("../components/LikedRestaurants/LikedRestaurants"),
@@ -280,18 +279,24 @@ export default function Home() {
 					rel="stylesheet"
 				/>
 			</Head>
-			<main className="flex flex-col md:flex-row min-h-screen bg-yellow-400">
-				<div className="w-full md:w-1/3 lg:w-1/4"></div>
-				<div className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center">
-					<h1 className="text-4xl md:text-5xl font-bold mb-8 mt-4 text-black font-pacifico">
+			<main className="flex flex-col min-h-screen bg-yellow-400 py-16">
+				<header className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
+					<h1 className="text-4xl md:text-5xl font-bold mb-2 text-black font-pacifico">
 						Arrastaurante
 					</h1>
+					{/* New subheader */}
+					<h2 className="text-xl mb-8 text-black text-center px-4">
+						Descubra e salve seus restaurantes favoritos com um
+						simples deslize
+					</h2>
+				</header>
+				<section className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center justify-center mx-auto max-w-md">
 					{/* Display location or prompt for permission */}
-					{locationDisplay && (
+					{/* {locationDisplay && (
 						<p className="mb-4 text-black">
 							Localização atual: {locationDisplay}
 						</p>
-					)}
+					)} */}
 					{permissionDenied && (
 						<p className="mb-4 text-red-500">
 							Permissão de geolocalização negada. Por favor,
@@ -320,11 +325,32 @@ export default function Home() {
 								Carregando restaurantes...
 							</p>
 						) : restaurants.length > 0 && currentRestaurant ? (
-							<RestaurantCard
-								key={currentRestaurant.place_id}
-								restaurant={currentRestaurant}
-								handleSwipe={handleSwipe}
-							/>
+							<>
+								<RestaurantCard
+									key={currentRestaurant.place_id}
+									restaurant={currentRestaurant}
+									handleSwipe={handleSwipe}
+								/>
+								<JsonLd<SchemaRestaurant>
+									item={{
+										"@context": "https://schema.org",
+										"@type": "Restaurant",
+										name: currentRestaurant.name,
+										address: {
+											"@type": "PostalAddress",
+											streetAddress:
+												currentRestaurant.vicinity,
+										},
+										aggregateRating: {
+											"@type": "AggregateRating",
+											ratingValue:
+												currentRestaurant.rating,
+											reviewCount:
+												currentRestaurant.user_ratings_total,
+										},
+									}}
+								/>
+							</>
 						) : (
 							<p className="text-lg text-gray-600 italic">
 								Não há mais restaurantes para exibir
@@ -352,8 +378,10 @@ export default function Home() {
 							Permitir Acesso à Localização
 						</button>
 					)}
-				</div>
-				<div className="w-full md:w-1/3 lg:w-1/4"></div>
+				</section>
+				<aside className="w-full md:w-1/3 lg:w-1/4">
+					{/* Additional content or widgets can be added here */}
+				</aside>
 			</main>
 		</>
 	);
