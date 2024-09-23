@@ -10,7 +10,6 @@ import { fetchNearbyRestaurants } from "../utils/fetchRestaurants";
 import { Restaurant } from "../types/restaurants";
 import useLocalStorage from "../hooks/useLocalStorage";
 import * as XLSX from "xlsx";
-import { fetchIpBasedLocation } from "../utils/fetchIpBasedLocation";
 import { shuffleArray } from "../utils/arrayUtils";
 
 const LikedRestaurants = dynamic(
@@ -127,7 +126,6 @@ export default function Home() {
 			setError("Erro ao buscar dados de localização");
 		}
 	};
-
 	const getLocation = async () => {
 		console.log("Attempting to get user location...");
 		if ("geolocation" in navigator) {
@@ -138,13 +136,13 @@ export default function Home() {
 							resolve,
 							(err) => {
 								if (err.code === err.PERMISSION_DENIED) {
-									setPermissionDenied(true); // Update permission state
+									setPermissionDenied(true);
 								}
 								reject(err);
 							},
 							{
 								enableHighAccuracy: true,
-								timeout: 10000, // Increased timeout for better reliability
+								timeout: 10000,
 								maximumAge: 0,
 							}
 						);
@@ -157,30 +155,21 @@ export default function Home() {
 				});
 			} catch (error) {
 				console.warn(
-					"Unable to access geolocation. Falling back to IP-based location."
+					"Unable to access geolocation. Please enter your postal code."
 				);
-				await fallbackToIpBasedLocation();
+				setError(
+					"Não foi possível acessar sua localização. Por favor, insira seu código postal."
+				);
+				setPermissionDenied(true);
 			}
 		} else {
 			console.warn(
-				"Geolocation is not supported by your browser. Falling back to IP-based location."
+				"Geolocation is not supported by your browser. Please enter your postal code."
 			);
-			await fallbackToIpBasedLocation();
-		}
-	};
-
-	const fallbackToIpBasedLocation = async () => {
-		try {
-			const ipBasedLocation = await fetchIpBasedLocation();
-			setLocation({
-				lat: ipBasedLocation.latitude,
-				lng: ipBasedLocation.longitude,
-			});
-		} catch (error) {
-			console.error("Error fetching IP-based location:", error);
 			setError(
-				"Não foi possível determinar sua localização. Por favor, insira um código postal."
+				"Seu navegador não suporta geolocalização. Por favor, insira seu código postal."
 			);
+			setPermissionDenied(true);
 		}
 	};
 
@@ -285,40 +274,46 @@ export default function Home() {
 					<h1 className="text-4xl md:text-5xl font-bold mb-2 text-black font-pacifico">
 						Arrastaurante
 					</h1>
-					{/* New subheader */}
 					<h2 className="text-xl mb-8 text-black text-center px-4">
 						Descubra e salve seus restaurantes favoritos com um
 						simples deslize
 					</h2>
 				</header>
 				<section className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center justify-center mx-auto max-w-md">
-					{/* Display location or prompt for permission */}
-					{/* {locationDisplay && (
-						<p className="mb-4 text-black">
-							Localização atual: {locationDisplay}
-						</p>
-					)} */}
-					{permissionDenied && (
-						<p className="mb-4 text-red-500">
-							Permissão de geolocalização negada. Por favor,
-							insira seu código postal.
-						</p>
+					{permissionDenied ? (
+						<div className="mb-4 w-full">
+							<p className="mb-2 text-red-500 text-center">
+								Permissão de geolocalização negada ou não
+								disponível. Por favor, insira seu código postal.
+							</p>
+							<div className="flex items-center border-4 border-black rounded-lg overflow-hidden">
+								<input
+									type="text"
+									value={postalCode}
+									onChange={(e) =>
+										setPostalCode(e.target.value)
+									}
+									placeholder="Insira o código postal"
+									className="px-4 py-2 focus:outline-none flex-grow text-black"
+								/>
+								<button
+									onClick={handlePostalCodeSearch}
+									className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors font-bold"
+								>
+									Buscar
+								</button>
+							</div>
+						</div>
+					) : (
+						!location && (
+							<button
+								onClick={getLocation}
+								className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors font-bold"
+							>
+								Permitir Acesso à Localização
+							</button>
+						)
 					)}
-					<div className="mb-4 flex items-center border-4 border-black rounded-lg overflow-hidden">
-						<input
-							type="text"
-							value={postalCode}
-							onChange={(e) => setPostalCode(e.target.value)}
-							placeholder="Insira o código postal"
-							className="px-4 py-2 focus:outline-none flex-grow text-black"
-						/>
-						<button
-							onClick={handlePostalCodeSearch}
-							className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors font-bold"
-						>
-							Buscar
-						</button>
-					</div>
 					{error && <p className="text-red-500 mb-4">{error}</p>}
 					<div className="swipe-container flex flex-col items-center justify-center w-full max-w-md mx-auto">
 						{isLoading ? (
@@ -371,14 +366,6 @@ export default function Home() {
 						/>
 						{/* Add a component or button to manage disliked restaurants if needed */}
 					</div>
-					{!location && !permissionDenied && (
-						<button
-							onClick={requestGeolocation}
-							className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors font-bold"
-						>
-							Permitir Acesso à Localização
-						</button>
-					)}
 				</section>
 				<aside className="w-full md:w-1/3 lg:w-1/4">
 					{/* Additional content or widgets can be added here */}
