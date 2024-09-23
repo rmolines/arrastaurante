@@ -277,10 +277,6 @@ export default function Home() {
 				<section className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center justify-center mx-auto max-w-md">
 					{permissionDenied ? (
 						<div className="mb-4 w-full">
-							<p className="mb-2 text-red-500 text-center">
-								Permissão de geolocalização negada ou não
-								disponível. Por favor, insira seu código postal.
-							</p>
 							<div className="flex items-center border-4 border-black rounded-lg overflow-hidden">
 								<input
 									type="text"
@@ -309,7 +305,7 @@ export default function Home() {
 							</button>
 						)
 					)}
-					{error && <p className="text-red-500 mb-4">{error}</p>}
+					{/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
 					<div className="swipe-container flex flex-col items-center justify-center w-full max-w-md mx-auto">
 						{isLoading ? (
 							<p className="text-lg text-black italic">
