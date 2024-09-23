@@ -14,9 +14,12 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: "Arrastaurante - Encontre os melhores restaurantes perto de você",
+	title: "arrastaurante - Encontre os melhores restaurantes perto de você",
 	description:
 		"Descubra e avalie restaurantes próximos com Arrastaurante. Deslize para direita para curtir, para esquerda para passar. Encontre sua próxima refeição favorita!",
+	icons: {
+		icon: "/images/arrastaurante-logo.png", // Add this line
+	},
 	openGraph: {
 		title: "Arrastaurante - Encontre os melhores restaurantes perto de você",
 		description:
