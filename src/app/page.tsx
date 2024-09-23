@@ -267,13 +267,13 @@ export default function Home() {
 			</Head>
 			<main className="flex flex-col min-h-screen bg-yellow-400 py-16 px-4">
 				<header className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
-					<h1 className="text-4xl md:text-5xl font-bold mb-2 text-black font-pacifico">
+					<h1 className="text-4xl md:text-5xl font-bold mb-2 text-black font-pacifico pb-8">
 						arrastaurante
 					</h1>
-					<h2 className="text-xl mb-8 text-black text-center px-4">
+					{/* <h2 className="text-xl mb-8 text-black text-center px-4">
 						Descubra e salve seus restaurantes favoritos com um
 						simples deslize
-					</h2>
+					</h2> */}
 				</header>
 				<section className="w-full md:w-1/3 lg:w-1/2 flex flex-col items-center justify-center mx-auto max-w-md">
 					<div className="mb-4 w-full">
