@@ -33,6 +33,7 @@ export default function Home() {
 		Restaurant[]
 	>("dislikedRestaurants", []);
 	const [postalCode, setPostalCode] = useState("");
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [error, setError] = useState<string | null>(null);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [priceFilter, setPriceFilter] = useState<number | null>(null); // Any price
