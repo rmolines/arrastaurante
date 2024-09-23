@@ -43,6 +43,7 @@ export default function Home() {
 	const [ratingFilter, setRatingFilter] = useState<number>(4); // 4 stars and above
 	const [isLoading, setIsLoading] = useState<boolean>(false); // New loading state
 	const [resetMessage, setResetMessage] = useState<string | null>(null); // Optional feedback
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [locationDisplay, setLocationDisplay] = useState<string>("");
 	const [permissionDenied, setPermissionDenied] = useState<boolean>(false); // New state for permission
 

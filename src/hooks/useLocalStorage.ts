@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Restaurant } from "@/types/restaurants";
 
-function useLocalStorage(key: string, initialValue: Restaurant[]) {
-	const [storedValue, setStoredValue] = useState<Restaurant[]>(() => {
+function useLocalStorage<T>(key: string, initialValue: T) {
+	const [storedValue, setStoredValue] = useState<T>(() => {
 		if (typeof window === "undefined") {
 			return initialValue;
 		}
@@ -15,9 +14,7 @@ function useLocalStorage(key: string, initialValue: Restaurant[]) {
 		}
 	});
 
-	const setValue = (
-		value: Restaurant[] | ((val: Restaurant[]) => Restaurant[])
-	) => {
+	const setValue = (value: T | ((val: T) => T)) => {
 		try {
 			const valueToStore =
 				value instanceof Function ? value(storedValue) : value;
