@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 		url: "https://arrastaurante.vercel.app/", // Replace with your actual URL
 		images: [
 			{
-				url: "https://www.arrastaurante.com/og-image.jpg", // Replace with your actual OG image
+				url: "/images/arrastaurante-logo.png", // Replace with your actual OG image
 				width: 1200,
 				height: 630,
 				alt: "Arrastaurante logo",
